@@ -1,6 +1,7 @@
 import express from 'express';
 import connectDB from './db-connection';
-import bookrouter from './routes/book.route';
+import bookRouter from './routes/book.route';
+import mechanismRouter from './routes/mechanism.route';
 
 const app = express();
 
@@ -11,7 +12,9 @@ app.get("/", (_, response) => {
   response.status(200).send("Server is up and running 💫");
 });
 
-app.use("/books", bookrouter);
+// Routes
+app.use("/books", bookRouter);
+app.use("/mechanism", mechanismRouter); // Tambahkan route mechanism
 
 const PORT = 4000;
 app.listen(PORT, () => {
