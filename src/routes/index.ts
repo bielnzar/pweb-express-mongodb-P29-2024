@@ -1,4 +1,5 @@
 import express from "express";
+import { auth } from "../middleware/auth";
 
 const router = express.Router();
 
@@ -7,7 +8,8 @@ import bookRoute from "./book.route";
 import mechanismRoute from "./mechanism.route";
 
 router.use("/auth", authRoute);
-router.use("/books", bookRoute);
-router.use("/mechanism", mechanismRoute);
+
+router.use("/books", auth, bookRoute);   
+router.use("/mechanism", auth, mechanismRoute);
 
 export default router;
