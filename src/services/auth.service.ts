@@ -32,7 +32,16 @@ export const loginUser = async (identifier: string, password: string) => {
         throw new Error('Invalid credentials');
     }
 
+    const currentTime = Math.floor(Date.now() / 1000);
+    user.tokens = user.tokens.filter(tokenObj => {
+        const decoded = jwt.verify(tokenObj.token, JWT_SECRET, { ignoreExpiration: true }) as jwt.JwtPayload;
+        return decoded.exp > currentTime;
+    });
+
     const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    user.tokens = user.tokens.concat({ token });
+    await user.save();
+
     return {
         user: {
             username: user.username,
